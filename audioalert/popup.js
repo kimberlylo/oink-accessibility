@@ -4,18 +4,36 @@
 
 'use strict';
 
-let changeColor = document.getElementById('changeColor');
+var curr_color = ["#FFFFFF", "#FFFFFF", "#FFFFFF"];
+var new_color = ["#FFFFFF", "#FFFFFF" , "#FFFFFF"];
 
-chrome.storage.sync.get('color', function(data) {
-  changeColor.style.backgroundColor = data.color;
-  changeColor.setAttribute('value', data.color);
-});
+var table= document.createElement('table'),
+    thead = document.createElement('thead'),
+    tbody = document.createElement('tbody'),
+    th,
+    tr,
+    td;
+    th = document.createElement('th'),          
+    th.innerHTML="Current Color";
+    table.appendChild(th);
+    th = document.createElement('th'); 
+    th.innerHTML= "New Color"
+    table.appendChild(th);
+    table.appendChild(thead);            
+    table.appendChild(tbody);
+    
+    document.body.appendChild(table);
+ for(var i=0;i<curr_color.length;i++){
+    tr = document.createElement('tr'),
+    //for curr colors
+    td= document.createElement('td');
+    td.innerHTML=curr_color[i];
+    tr.appendChild(td);
 
-changeColor.onclick = function(element) {
-  let color = element.target.value;
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    chrome.tabs.executeScript(
-        tabs[0].id,
-        {code: 'document.body.style.backgroundColor = "' + color + '";'});
-  });
-};
+    //for new colors
+    td = document.createElement('td');
+    td.innerHTML="<label contenteditable=\"true\">" + new_color[i];
+    tr.appendChild(td);
+
+    tbody.appendChild(tr);
+ }
